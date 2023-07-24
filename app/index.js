@@ -1,4 +1,6 @@
 const youtube = require("youtube-search-api");
+const ytrend = require("@freetube/yt-trending-scraper");
+
 
 
 const express = require('express');
@@ -51,6 +53,26 @@ app.get('/channel/:id', (req, myres) => {
     console.log(err);
   });
   
+});
+
+
+app.get('/trending/:id', (req, myres) => {
+  const parameters = {
+    geoLocation: req.params.id,
+    parseCreatorOnRise: false,
+    page: 'music'
+}
+
+ytrend.scrapeTrendingPage(parameters).then((data) =>{
+    console.log(data);
+    myres.json(data);
+    
+}).catch((error)=>{
+    console.error(error);
+});
+
+
+
 });
 
 app.listen(port, () => {
